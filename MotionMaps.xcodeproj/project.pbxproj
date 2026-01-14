@@ -30,6 +30,11 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		4E0377D32F18340700379665 /* screenshots */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = screenshots;
+			sourceTree = "<group>";
+		};
 		4EB74E072D91845A00EB8AA4 /* motionMaps */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = motionMaps;
@@ -75,6 +80,7 @@
 		4EB74DFC2D91845A00EB8AA4 = {
 			isa = PBXGroup;
 			children = (
+				4E0377D32F18340700379665 /* screenshots */,
 				4EB74E072D91845A00EB8AA4 /* motionMaps */,
 				4EB74E192D91845B00EB8AA4 /* motionMapsTests */,
 				4EB74E232D91845B00EB8AA4 /* motionMapsUITests */,
@@ -108,6 +114,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				4E0377D32F18340700379665 /* screenshots */,
 				4EB74E072D91845A00EB8AA4 /* motionMaps */,
 			);
 			name = MotionMaps;
