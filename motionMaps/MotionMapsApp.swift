@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct transport_mapApp: App {
+struct motionMapsApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()

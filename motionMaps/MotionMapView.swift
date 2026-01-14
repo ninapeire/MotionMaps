@@ -1,5 +1,5 @@
 //
-//  WorkoutMapView.swift
+//  MotionMapView.swift
 //  transport_map
 //
 //  Created by Nina Peire on 24/03/2025.
@@ -26,7 +26,7 @@ extension HKWorkoutActivityType {
     }
 }
 
-struct WorkoutMapView: View {
+struct MotionMapView: View {
     let workout: HKWorkout
     let route: [CLLocation]
 

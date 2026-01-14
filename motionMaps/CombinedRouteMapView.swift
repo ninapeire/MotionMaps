@@ -1,6 +1,6 @@
 //
 //  CombinedRouteMapView.swift
-//  transport_map
+//  MotionMaps
 //
 //  Created by Nina Peire on 24/03/2025.
 //
