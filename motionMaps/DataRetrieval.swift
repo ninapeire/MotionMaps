@@ -1,6 +1,6 @@
 //
-//  data_retrieval.swift
-//  transport_map
+//  DataRetrieval.swift
+//  MotionMaps
 //
 //  Created by Nina Peire on 24/03/2025.
 //
@@ -15,14 +15,16 @@ class HealthManager: ObservableObject {
     @Published var cyclingWorkoutRoutes: [UUID: ([CLLocation], HKWorkout)] = [:]
     @Published var runningWorkoutRoutes: [UUID: ([CLLocation], HKWorkout)] = [:]
     
+    // HealthKit data types to read
     let readTypes = Set([
             HKObjectType.workoutType(),
             HKSeriesType.workoutRoute(),
-            HKObjectType.quantityType(forIdentifier: .heartRate)!,
-            HKObjectType.quantityType(forIdentifier: .distanceCycling)!,
-            HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
+//            HKObjectType.quantityType(forIdentifier: .heartRate)!,
+//            HKObjectType.quantityType(forIdentifier: .distanceCycling)!,
+//            HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
         ])
 
+    // Requests HealthKit read authorization for required data types
     func requestAuthorization() {
         if HKHealthStore.isHealthDataAvailable() {
             healthStore.requestAuthorization(toShare: nil, read: readTypes) { success, error in
@@ -39,6 +41,7 @@ class HealthManager: ObservableObject {
         }
     }
     
+    // Returns a predicate to filter workouts starting on a specific calendar day
     func getCalendarDatePredicate(day: Int, month: Int, year: Int) -> NSPredicate {
         let calendar = Calendar.current
         var dateComponents = DateComponents()
@@ -49,6 +52,7 @@ class HealthManager: ObservableObject {
         return HKQuery.predicateForSamples(withStart: startDate, end: nil, options: [])
     }
     
+    // Fetches the route (locations) for a given workout
     func fetchRoute(for workout: HKWorkout, completion: @escaping ([CLLocation]) -> Void) {
         let predicate = HKQuery.predicateForObjects(from: workout)
         let routeQuery = HKSampleQuery(sampleType: HKSeriesType.workoutRoute(), predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { _, samples, error in
@@ -73,6 +77,7 @@ class HealthManager: ObservableObject {
         healthStore.execute(routeQuery)
     }
     
+    // Fetches all cycling workouts starting January 3rd 2025.
     func fetchCyclingWorkouts() {
         let workoutType = HKObjectType.workoutType()
 
@@ -97,6 +102,7 @@ class HealthManager: ObservableObject {
         healthStore.execute(query)
     }
     
+    // Fetches all running workouts starting January 3rd 2025.
     func fetchRunningWorkouts() {
         let workoutType = HKObjectType.workoutType()
 

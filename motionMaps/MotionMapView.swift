@@ -1,6 +1,6 @@
 //
 //  MotionMapView.swift
-//  transport_map
+//  MotionMaps
 //
 //  Created by Nina Peire on 24/03/2025.
 //
@@ -13,19 +13,19 @@ import HealthKit
 extension HKWorkoutActivityType {
     var name: String {
         switch self {
-        case .walking: return "Walking"
+//        case .walking: return "Walking"
         case .running: return "Running"
         case .cycling: return "Cycling"
-        case .swimming: return "Swimming"
-        case .hiking: return "Hiking"
-        case .yoga: return "Yoga"
-        case .functionalStrengthTraining: return "Strength Training"
         default:
             return "Workout"
         }
     }
 }
 
+// Displays a single workout route on a map
+// - Shows the path of the workout as a polyline
+// - Marks the start and end points
+// - Centers map on the first coordinate
 struct MotionMapView: View {
     let workout: HKWorkout
     let route: [CLLocation]
@@ -48,8 +48,7 @@ struct MotionMapView: View {
     }
 }
 
-// MARK: - RouteMap
-
+// Makes a MapView from the individual workouts
 struct RouteMap: UIViewRepresentable {
     let route: [CLLocation]
     @Binding var region: MKCoordinateRegion
@@ -99,6 +98,7 @@ struct RouteMap: UIViewRepresentable {
         Coordinator()
     }
 
+    // MKMapViewDelegate to render overlays
     class Coordinator: NSObject, MKMapViewDelegate {
         func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
             if let polyline = overlay as? MKPolyline {

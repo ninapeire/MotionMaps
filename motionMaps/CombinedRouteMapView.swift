@@ -11,8 +11,15 @@ import MapKit
 import HealthKit
 
 
+// MARK: - Constants
+
 // Set London as home for anonymisation as centre point.
 let home = CLLocationCoordinate2D(latitude: 51.5072, longitude: 0.1276)
+// Map span for default zoom.
+let defaultSpan = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+
+
+// MARK: - Structures
 
 // Map View which contains all the combined routes.
 struct CombinedRouteMapView: View {
@@ -26,7 +33,7 @@ struct CombinedRouteMapView: View {
         }
         .onAppear {
             // Centre map view on home location.
-            region = MKCoordinateRegion(center: home, span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
+            region = MKCoordinateRegion(center: home, span: defaultSpan)
         }
         .navigationTitle("All Routes")
         .navigationBarTitleDisplayMode(.inline)
@@ -51,10 +58,8 @@ struct MultiRouteMap: UIViewRepresentable {
         }
 
         // Centre map view on home location.
-        mapView.setRegion(MKCoordinateRegion(center: home,
-                                             span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)),
-                          animated: false)
-
+        mapView.setRegion(MKCoordinateRegion(center: home, span: defaultSpan), animated: false)
+        
         return mapView
     }
 
@@ -78,6 +83,9 @@ struct MultiRouteMap: UIViewRepresentable {
         }
     }
 }
+
+
+// MARK: - Classes
 
 // Custom polyline class
 class ColoredPolyline: MKPolyline {
