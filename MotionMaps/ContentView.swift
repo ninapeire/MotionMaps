@@ -14,7 +14,7 @@ struct ContentView: View {
     @StateObject var healthManager = HealthManager()
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             List {
                 if !healthManager.runningWorkoutRoutes.isEmpty {
                     NavigationLink("Running", destination: CombinedRouteMapView(allRoutes: healthManager.runningWorkoutRoutes))
