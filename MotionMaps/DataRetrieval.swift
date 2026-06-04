@@ -26,6 +26,11 @@ class HealthManager: ObservableObject {
     @Published var cyclingWorkoutRoutes: [UUID: RouteEntry] = [:]
     @Published var runningWorkoutRoutes: [UUID: RouteEntry] = [:]
 
+    /// `true` once the auth prompt has resolved (granted, denied, or unavailable).
+    /// Used by the UI to switch from a loading state to either the workout list
+    /// or an empty state — even when subsequent route queries are still in flight.
+    @Published var didCompleteAuth: Bool = false
+
     let readTypes = Set([
         HKObjectType.workoutType(),
         HKSeriesType.workoutRoute(),
@@ -33,9 +38,14 @@ class HealthManager: ObservableObject {
 
     /// Requests HealthKit read access. On success, kicks off the cycling and running
     /// workout fetches; on failure logs an error and leaves both dictionaries empty.
+    /// Sets `didCompleteAuth = true` once the prompt resolves so the UI can move
+    /// off the loading state.
     func requestAuthorization() {
         if HKHealthStore.isHealthDataAvailable() {
             healthStore.requestAuthorization(toShare: nil, read: readTypes) { success, error in
+                DispatchQueue.main.async {
+                    self.didCompleteAuth = true
+                }
                 if success {
                     print("Authorization granted.")
                     self.fetchCyclingWorkouts()
@@ -46,6 +56,9 @@ class HealthManager: ObservableObject {
             }
         } else {
             print("Health data is not available.")
+            DispatchQueue.main.async {
+                self.didCompleteAuth = true
+            }
         }
     }
 
