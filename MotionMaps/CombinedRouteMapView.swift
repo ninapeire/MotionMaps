@@ -13,17 +13,21 @@ import HealthKit
 
 // MARK: - Constants
 
-/// Central London (~Trafalgar Square) — default centre when the map first appears.
-let home = CLLocationCoordinate2D(latitude: 51.5072, longitude: -0.1276)
+/// File-private namespace for map view defaults. Avoids polluting the module
+/// with bare top-level `home`/`defaultSpan` constants.
+private enum MapDefaults {
+    /// Central London (~Trafalgar Square) — default centre when no routes are available.
+    static let home = CLLocationCoordinate2D(latitude: 51.5072, longitude: -0.1276)
 
-/// Roughly a 5 km × 5 km viewport — wide enough to see most central-London routes without zooming.
-let defaultSpan = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+    /// Roughly a 5 km × 5 km viewport — wide enough to see most central-London routes without zooming.
+    static let defaultSpan = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+}
 
 
 // MARK: - Views
 
-/// SwiftUI host for the combined-routes map. Centres on `home` on first appearance
-/// and delegates rendering to `MultiRouteMap`.
+/// SwiftUI host for the combined-routes map. Centres on `MapDefaults.home` on
+/// first appearance and delegates rendering to `MultiRouteMap`.
 struct CombinedRouteMapView: View {
     let allRoutes: [UUID: ([CLLocation], HKWorkout)]
     @State private var region = MKCoordinateRegion()
@@ -34,7 +38,7 @@ struct CombinedRouteMapView: View {
                 .edgesIgnoringSafeArea(.all)
         }
         .onAppear {
-            region = MKCoordinateRegion(center: home, span: defaultSpan)
+            region = MKCoordinateRegion(center: MapDefaults.home, span: MapDefaults.defaultSpan)
         }
         .navigationTitle("All Routes")
         .navigationBarTitleDisplayMode(.inline)
@@ -58,7 +62,7 @@ struct MultiRouteMap: UIViewRepresentable {
             mapView.addOverlay(polyline)
         }
 
-        mapView.setRegion(MKCoordinateRegion(center: home, span: defaultSpan), animated: false)
+        mapView.setRegion(MKCoordinateRegion(center: MapDefaults.home, span: MapDefaults.defaultSpan), animated: false)
 
         return mapView
     }
