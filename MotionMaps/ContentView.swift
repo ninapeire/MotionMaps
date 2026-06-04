@@ -12,6 +12,7 @@ import HealthKit
 /// types HealthKit returns; tapping a row navigates to the combined map view.
 struct ContentView: View {
     @StateObject var healthManager = HealthManager()
+    @State private var hasRequestedAuth = false
 
     var body: some View {
         NavigationStack {
@@ -29,6 +30,8 @@ struct ContentView: View {
             .navigationTitle("Workout Maps")
         }
         .onAppear {
+            guard !hasRequestedAuth else { return }
+            hasRequestedAuth = true
             healthManager.requestAuthorization()
         }
     }
