@@ -29,12 +29,12 @@ private enum MapDefaults {
 /// SwiftUI host for the combined-routes map. Centres on `MapDefaults.home` on
 /// first appearance and delegates rendering to `MultiRouteMap`.
 struct CombinedRouteMapView: View {
-    let allRoutes: [UUID: ([CLLocation], HKWorkout)]
+    let allRoutes: [UUID: RouteEntry]
     @State private var region = MKCoordinateRegion()
 
     var body: some View {
         ZStack {
-            MultiRouteMap(routes: allRoutes.map { $0.value.0 }, region: $region)
+            MultiRouteMap(routes: allRoutes.values.map(\.locations), region: $region)
                 .edgesIgnoringSafeArea(.all)
         }
         .onAppear {

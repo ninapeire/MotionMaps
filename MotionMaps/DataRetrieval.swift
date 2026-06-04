@@ -10,12 +10,21 @@ import Foundation
 import CoreLocation
 
 
+/// Pairs a `HKWorkout` with its recorded route. Keyed by `workout.uuid` in the
+/// `HealthManager` dictionaries so the workout reference is available for future
+/// per-workout views (e.g. drill-down detail) without storing it twice.
+struct RouteEntry {
+    let workout: HKWorkout
+    let locations: [CLLocation]
+}
+
+
 /// Owns the `HKHealthStore`, requests HealthKit authorization, and runs the
 /// HKSampleQueries that populate `runningWorkoutRoutes` and `cyclingWorkoutRoutes`.
 class HealthManager: ObservableObject {
     private let healthStore = HKHealthStore()
-    @Published var cyclingWorkoutRoutes: [UUID: ([CLLocation], HKWorkout)] = [:]
-    @Published var runningWorkoutRoutes: [UUID: ([CLLocation], HKWorkout)] = [:]
+    @Published var cyclingWorkoutRoutes: [UUID: RouteEntry] = [:]
+    @Published var runningWorkoutRoutes: [UUID: RouteEntry] = [:]
 
     let readTypes = Set([
         HKObjectType.workoutType(),
@@ -94,7 +103,7 @@ class HealthManager: ObservableObject {
             for workout in workouts {
                 self.fetchRoute(for: workout) { locations in
                     DispatchQueue.main.async {
-                        self.cyclingWorkoutRoutes[workout.uuid] = (locations, workout)
+                        self.cyclingWorkoutRoutes[workout.uuid] = RouteEntry(workout: workout, locations: locations)
                     }
                 }
             }
@@ -120,7 +129,7 @@ class HealthManager: ObservableObject {
             for workout in workouts {
                 self.fetchRoute(for: workout) { locations in
                     DispatchQueue.main.async {
-                        self.runningWorkoutRoutes[workout.uuid] = (locations, workout)
+                        self.runningWorkoutRoutes[workout.uuid] = RouteEntry(workout: workout, locations: locations)
                     }
                 }
             }
