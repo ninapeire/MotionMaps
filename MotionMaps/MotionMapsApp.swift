@@ -9,8 +9,6 @@ import SwiftUI
 
 @main
 struct MotionMapsApp: App {
-    
-    // The main scene of the app.
     var body: some Scene {
         WindowGroup {
             ContentView()

@@ -8,30 +8,27 @@
 import SwiftUI
 import HealthKit
 
-
-// The main view that displays the options for different workout types.
+/// Top-level navigation list. Surfaces Running and Cycling rows for any workout
+/// types HealthKit returns; tapping a row navigates to the combined map view.
 struct ContentView: View {
     @StateObject var healthManager = HealthManager()
-    
+
     var body: some View {
         NavigationView {
-            List{
-                
-                // Show running routes if these are available.
+            List {
                 if !healthManager.runningWorkoutRoutes.isEmpty {
                     NavigationLink("Running", destination: CombinedRouteMapView(allRoutes: healthManager.runningWorkoutRoutes))
                         .padding()
                 }
-                
-                // Show cycling routes if these are available.
+
                 if !healthManager.cyclingWorkoutRoutes.isEmpty {
                     NavigationLink("Cycling", destination: CombinedRouteMapView(allRoutes: healthManager.cyclingWorkoutRoutes))
                         .padding()
                 }
-                
-            }.navigationTitle("Workout Maps")
-        }.onAppear {
-            // Request HealthKit permissions on launch.
+            }
+            .navigationTitle("Workout Maps")
+        }
+        .onAppear {
             healthManager.requestAuthorization()
         }
     }

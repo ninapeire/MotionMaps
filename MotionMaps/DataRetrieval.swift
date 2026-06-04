@@ -10,6 +10,8 @@ import Foundation
 import CoreLocation
 
 
+/// Owns the `HKHealthStore`, requests HealthKit authorization, and runs the
+/// HKSampleQueries that populate `runningWorkoutRoutes` and `cyclingWorkoutRoutes`.
 class HealthManager: ObservableObject {
     private let healthStore = HKHealthStore()
     @Published var cyclingWorkoutRoutes: [UUID: ([CLLocation], HKWorkout)] = [:]
@@ -20,7 +22,8 @@ class HealthManager: ObservableObject {
         HKSeriesType.workoutRoute(),
     ])
 
-    // Requests HealthKit read authorization for required data types
+    /// Requests HealthKit read access. On success, kicks off the cycling and running
+    /// workout fetches; on failure logs an error and leaves both dictionaries empty.
     func requestAuthorization() {
         if HKHealthStore.isHealthDataAvailable() {
             healthStore.requestAuthorization(toShare: nil, read: readTypes) { success, error in
@@ -37,7 +40,7 @@ class HealthManager: ObservableObject {
         }
     }
 
-    // Returns a predicate to filter workouts starting on a specific calendar day
+    /// Returns an `NSPredicate` matching workouts whose start date is on or after the given calendar day.
     func getCalendarDatePredicate(day: Int, month: Int, year: Int) -> NSPredicate {
         let calendar = Calendar.current
         var dateComponents = DateComponents()
@@ -48,7 +51,8 @@ class HealthManager: ObservableObject {
         return HKQuery.predicateForSamples(withStart: startDate, end: nil, options: [])
     }
 
-    // Fetches the route (locations) for a given workout
+    /// Fetches the recorded `CLLocation` samples for a single workout's route.
+    /// Calls back with an empty array if the workout has no associated route.
     func fetchRoute(for workout: HKWorkout, completion: @escaping ([CLLocation]) -> Void) {
         let predicate = HKQuery.predicateForObjects(from: workout)
         let routeQuery = HKSampleQuery(sampleType: HKSeriesType.workoutRoute(), predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { _, samples, error in
@@ -73,7 +77,8 @@ class HealthManager: ObservableObject {
         healthStore.execute(routeQuery)
     }
 
-    // Fetches all cycling workouts since October 1st, 2024.
+    /// Fetches all cycling workouts recorded since October 1st, 2024 and
+    /// stores each one's route in `cyclingWorkoutRoutes`, keyed by workout UUID.
     func fetchCyclingWorkouts() {
         let workoutType = HKObjectType.workoutType()
 
@@ -98,7 +103,8 @@ class HealthManager: ObservableObject {
         healthStore.execute(query)
     }
 
-    // Fetches all running workouts since October 1st, 2024.
+    /// Fetches all running workouts recorded since October 1st, 2024 and
+    /// stores each one's route in `runningWorkoutRoutes`, keyed by workout UUID.
     func fetchRunningWorkouts() {
         let workoutType = HKObjectType.workoutType()
 

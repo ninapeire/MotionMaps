@@ -13,15 +13,17 @@ import HealthKit
 
 // MARK: - Constants
 
-// Central London — default map centre when the view first appears.
+/// Central London (~Trafalgar Square) — default centre when the map first appears.
 let home = CLLocationCoordinate2D(latitude: 51.5072, longitude: -0.1276)
-// Map span for default zoom.
+
+/// Roughly a 5 km × 5 km viewport — wide enough to see most central-London routes without zooming.
 let defaultSpan = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
 
 
-// MARK: - Structures
+// MARK: - Views
 
-// Map View which contains all the combined routes.
+/// SwiftUI host for the combined-routes map. Centres on `home` on first appearance
+/// and delegates rendering to `MultiRouteMap`.
 struct CombinedRouteMapView: View {
     let allRoutes: [UUID: ([CLLocation], HKWorkout)]
     @State private var region = MKCoordinateRegion()
@@ -32,7 +34,6 @@ struct CombinedRouteMapView: View {
                 .edgesIgnoringSafeArea(.all)
         }
         .onAppear {
-            // Centre map view on home location.
             region = MKCoordinateRegion(center: home, span: defaultSpan)
         }
         .navigationTitle("All Routes")
@@ -40,16 +41,16 @@ struct CombinedRouteMapView: View {
     }
 }
 
-// Generate the actual Mapview which contains the combined routes.
+/// `UIViewRepresentable` wrapper around `MKMapView`. Draws each provided route
+/// as a `ColoredPolyline` so future versions can theme by activity type.
 struct MultiRouteMap: UIViewRepresentable {
     let routes: [[CLLocation]]
     @Binding var region: MKCoordinateRegion
-    
+
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
 
-        // For each route add a blue line following its coordinates.
         for route in routes {
             let coords = route.map { $0.coordinate }
             let polyline = ColoredPolyline(coordinates: coords, count: coords.count)
@@ -57,9 +58,8 @@ struct MultiRouteMap: UIViewRepresentable {
             mapView.addOverlay(polyline)
         }
 
-        // Centre map view on home location.
         mapView.setRegion(MKCoordinateRegion(center: home, span: defaultSpan), animated: false)
-        
+
         return mapView
     }
 
@@ -85,9 +85,10 @@ struct MultiRouteMap: UIViewRepresentable {
 }
 
 
-// MARK: - Classes
+// MARK: - Helpers
 
-// Custom polyline class
+/// `MKPolyline` subclass with a per-overlay stroke colour — enables drawing different
+/// activity types (e.g. cycling vs running) in different colours from one renderer.
 class ColoredPolyline: MKPolyline {
     var color: UIColor = .systemBlue
 }
