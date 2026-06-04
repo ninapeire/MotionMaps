@@ -14,15 +14,11 @@ class HealthManager: ObservableObject {
     private let healthStore = HKHealthStore()
     @Published var cyclingWorkoutRoutes: [UUID: ([CLLocation], HKWorkout)] = [:]
     @Published var runningWorkoutRoutes: [UUID: ([CLLocation], HKWorkout)] = [:]
-    
-    // HealthKit data types to read
+
     let readTypes = Set([
-            HKObjectType.workoutType(),
-            HKSeriesType.workoutRoute(),
-//            HKObjectType.quantityType(forIdentifier: .heartRate)!,
-//            HKObjectType.quantityType(forIdentifier: .distanceCycling)!,
-//            HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
-        ])
+        HKObjectType.workoutType(),
+        HKSeriesType.workoutRoute(),
+    ])
 
     // Requests HealthKit read authorization for required data types
     func requestAuthorization() {
@@ -40,7 +36,7 @@ class HealthManager: ObservableObject {
             print("Health data is not available.")
         }
     }
-    
+
     // Returns a predicate to filter workouts starting on a specific calendar day
     func getCalendarDatePredicate(day: Int, month: Int, year: Int) -> NSPredicate {
         let calendar = Calendar.current
@@ -51,7 +47,7 @@ class HealthManager: ObservableObject {
         let startDate = calendar.date(from: dateComponents)!
         return HKQuery.predicateForSamples(withStart: startDate, end: nil, options: [])
     }
-    
+
     // Fetches the route (locations) for a given workout
     func fetchRoute(for workout: HKWorkout, completion: @escaping ([CLLocation]) -> Void) {
         let predicate = HKQuery.predicateForObjects(from: workout)
@@ -76,12 +72,12 @@ class HealthManager: ObservableObject {
         }
         healthStore.execute(routeQuery)
     }
-    
-    // Fetches all cycling workouts starting January 3rd 2025.
+
+    // Fetches all cycling workouts since October 1st, 2024.
     func fetchCyclingWorkouts() {
         let workoutType = HKObjectType.workoutType()
 
-        let predicate = self.getCalendarDatePredicate(day: 3, month: 1, year: 2025)
+        let predicate = self.getCalendarDatePredicate(day: 1, month: 10, year: 2024)
         let cyclingPredicate = HKQuery.predicateForWorkouts(with: .cycling)
         let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, cyclingPredicate])
 
@@ -98,15 +94,15 @@ class HealthManager: ObservableObject {
                 }
             }
         }
-        
+
         healthStore.execute(query)
     }
-    
-    // Fetches all running workouts starting January 3rd 2025.
+
+    // Fetches all running workouts since October 1st, 2024.
     func fetchRunningWorkouts() {
         let workoutType = HKObjectType.workoutType()
 
-        let predicate = self.getCalendarDatePredicate(day: 3, month: 1, year: 2025)
+        let predicate = self.getCalendarDatePredicate(day: 1, month: 10, year: 2024)
         let runningPredicate = HKQuery.predicateForWorkouts(with: .running)
         let combinedPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate, runningPredicate])
 
@@ -123,9 +119,7 @@ class HealthManager: ObservableObject {
                 }
             }
         }
-        
+
         healthStore.execute(query)
     }
-
-
 }

@@ -12,14 +12,14 @@
 			containerPortal = 4EB74DFD2D91845A00EB8AA4 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 4EB74E042D91845A00EB8AA4;
-			remoteInfo = transport_map;
+			remoteInfo = MotionMaps;
 		};
 		4EB74E212D91845B00EB8AA4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4EB74DFD2D91845A00EB8AA4 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 4EB74E042D91845A00EB8AA4;
-			remoteInfo = transport_map;
+			remoteInfo = MotionMaps;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -35,19 +35,19 @@
 			path = screenshots;
 			sourceTree = "<group>";
 		};
-		4EB74E072D91845A00EB8AA4 /* motionMaps */ = {
+		4EB74E072D91845A00EB8AA4 /* MotionMaps */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = motionMaps;
+			path = MotionMaps;
 			sourceTree = "<group>";
 		};
-		4EB74E192D91845B00EB8AA4 /* motionMapsTests */ = {
+		4EB74E192D91845B00EB8AA4 /* MotionMapsTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = motionMapsTests;
+			path = MotionMapsTests;
 			sourceTree = "<group>";
 		};
-		4EB74E232D91845B00EB8AA4 /* motionMapsUITests */ = {
+		4EB74E232D91845B00EB8AA4 /* MotionMapsUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = motionMapsUITests;
+			path = MotionMapsUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -120,7 +120,7 @@
 			name = MotionMaps;
 			packageProductDependencies = (
 			);
-			productName = transport_map;
+			productName = MotionMaps;
 			productReference = 4EB74E052D91845A00EB8AA4 /* MotionMaps.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -143,7 +143,7 @@
 			name = motionMapsTests;
 			packageProductDependencies = (
 			);
-			productName = transport_mapTests;
+			productName = motionMapsTests;
 			productReference = 4EB74E162D91845B00EB8AA4 /* motionMapsTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
@@ -166,7 +166,7 @@
 			name = motionMapsUITests;
 			packageProductDependencies = (
 			);
-			productName = transport_mapUITests;
+			productName = motionMapsUITests;
 			productReference = 4EB74E202D91845B00EB8AA4 /* motionMapsUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
@@ -403,15 +403,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = motionMaps/motionMaps.entitlements;
+				CODE_SIGN_ENTITLEMENTS = MotionMaps/MotionMaps.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"motionMaps/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"MotionMaps/Preview Content\"";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "\"We use your workout data to display activity in the app.\"";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "We use your workout data to display activity in the app.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -443,15 +443,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = motionMaps/motionMaps.entitlements;
+				CODE_SIGN_ENTITLEMENTS = MotionMaps/MotionMaps.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"motionMaps/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"MotionMaps/Preview Content\"";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "\"We use your workout data to display activity in the app.\"";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "We use your workout data to display activity in the app.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -496,7 +496,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/transport_map.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/transport_map";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MotionMaps.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MotionMaps";
 				XROS_DEPLOYMENT_TARGET = 2.2;
 			};
 			name = Debug;
@@ -519,7 +519,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/transport_map.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/transport_map";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MotionMaps.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MotionMaps";
 				XROS_DEPLOYMENT_TARGET = 2.2;
 			};
 			name = Release;
@@ -541,7 +541,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_TARGET_NAME = transport_map;
+				TEST_TARGET_NAME = MotionMaps;
 				XROS_DEPLOYMENT_TARGET = 2.2;
 			};
 			name = Debug;
@@ -563,7 +563,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				TEST_TARGET_NAME = transport_map;
+				TEST_TARGET_NAME = MotionMaps;
 				XROS_DEPLOYMENT_TARGET = 2.2;
 			};
 			name = Release;

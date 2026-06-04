@@ -13,8 +13,8 @@ import HealthKit
 
 // MARK: - Constants
 
-// Set London as home for anonymisation as centre point.
-let home = CLLocationCoordinate2D(latitude: 51.5072, longitude: 0.1276)
+// Central London — default map centre when the view first appears.
+let home = CLLocationCoordinate2D(latitude: 51.5072, longitude: -0.1276)
 // Map span for default zoom.
 let defaultSpan = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
 

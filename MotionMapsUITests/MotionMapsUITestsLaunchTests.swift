@@ -1,13 +1,13 @@
 //
-//  transport_mapUITestsLaunchTests.swift
-//  transport_mapUITests
+//  MotionMapsUITestsLaunchTests.swift
+//  motionMapsUITests
 //
 //  Created by Nina Peire on 24/03/2025.
 //
 
 import XCTest
 
-final class transport_mapUITestsLaunchTests: XCTestCase {
+final class MotionMapsUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true
@@ -21,9 +21,6 @@ final class transport_mapUITestsLaunchTests: XCTestCase {
     func testLaunch() throws {
         let app = XCUIApplication()
         app.launch()
-
-        // Insert steps here to perform after app launch but before taking a screenshot,
-        // such as logging into a test account or navigating somewhere in the app
 
         let attachment = XCTAttachment(screenshot: app.screenshot())
         attachment.name = "Launch Screen"

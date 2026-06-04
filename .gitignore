@@ -3,8 +3,11 @@
 
 # Xcode
 DerivedData/
+build/
 *.xcuserstate
-*.xcuserdata/
+xcuserdata/
+*.xcuserdatad/
+*.moved-aside
 
 # SwiftPM
 .build/

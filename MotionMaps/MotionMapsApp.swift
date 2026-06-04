@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct motionMapsApp: App {
+struct MotionMapsApp: App {
     
     // The main scene of the app.
     var body: some Scene {
