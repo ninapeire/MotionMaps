@@ -14,7 +14,8 @@ import UIKit
 /// or Running / Cycling rows for any workout types HealthKit returned.
 struct ContentView: View {
     @StateObject var healthManager = HealthManager()
-    @State private var hasRequestedAuth = false
+    @Environment(\.modelContext) private var modelContext
+    @State private var hasStarted = false
 
     private var hasNoWorkouts: Bool {
         healthManager.runningWorkoutRoutes.isEmpty && healthManager.cyclingWorkoutRoutes.isEmpty
@@ -34,9 +35,10 @@ struct ContentView: View {
             .navigationTitle("Workout Maps")
         }
         .onAppear {
-            guard !hasRequestedAuth else { return }
-            hasRequestedAuth = true
-            healthManager.requestAuthorization()
+            guard !hasStarted else { return }
+            hasStarted = true
+            healthManager.modelContext = modelContext
+            healthManager.start()
         }
     }
 

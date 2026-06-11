@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct MotionMapsApp: App {
@@ -13,5 +14,6 @@ struct MotionMapsApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: CachedWorkout.self)
     }
 }
