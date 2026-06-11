@@ -10,12 +10,29 @@ import Foundation
 import CoreLocation
 
 
-/// Pairs a `HKWorkout` with its recorded route. Keyed by `workout.uuid` in the
-/// `HealthManager` dictionaries so the workout reference is available for future
-/// per-workout views (e.g. drill-down detail) without storing it twice.
+/// A workout's metadata plus its recorded route. Carries enough information
+/// for the map view (`locations`), planned per-workout detail views (`uuid`,
+/// `activityType`, dates), and for SwiftData persistence — without holding an
+/// `HKWorkout` reference, which can't be serialised directly.
 struct RouteEntry {
-    let workout: HKWorkout
+    let uuid: UUID
+    let activityType: HKWorkoutActivityType
+    let startDate: Date
+    let endDate: Date
     let locations: [CLLocation]
+}
+
+extension RouteEntry {
+    /// Build a `RouteEntry` from an `HKWorkout` sample plus its fetched route locations.
+    init(workout: HKWorkout, locations: [CLLocation]) {
+        self.init(
+            uuid: workout.uuid,
+            activityType: workout.workoutActivityType,
+            startDate: workout.startDate,
+            endDate: workout.endDate,
+            locations: locations
+        )
+    }
 }
 
 
