@@ -24,6 +24,17 @@ private enum MapDefaults {
 
     /// Padding around the auto-fit bounding rect, in points.
     static let fitPadding = UIEdgeInsets(top: 40, left: 40, bottom: 40, right: 40)
+
+    /// Maximum coordinate span (in degrees) the auto-fit will accept. ~0.5° is
+    /// roughly 55 km, more than enough for any London-area route. Past this the
+    /// auto-fit would zoom out impractically far — almost always a sign of stray
+    /// junk GPS samples surviving the accuracy filter — so we fall back to `home`.
+    static let maxAutoFitSpan: Double = 0.5
+
+    /// CLLocation samples with horizontal accuracy worse than this (or negative,
+    /// meaning unknown) are dropped before fitting. 100 m keeps urban-canyon
+    /// readings while discarding lost-lock noise.
+    static let maxAcceptableAccuracy: CLLocationAccuracy = 100
 }
 
 
@@ -54,14 +65,23 @@ struct MultiRouteMap: UIViewRepresentable {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
 
+        var allValidCoords: [CLLocationCoordinate2D] = []
+
         for route in routes where !route.isEmpty {
-            let coords = route.map { $0.coordinate }
-            let polyline = ColoredPolyline(coordinates: coords, count: coords.count)
+            let validCoords = route
+                .filter { $0.horizontalAccuracy >= 0 && $0.horizontalAccuracy <= MapDefaults.maxAcceptableAccuracy }
+                .map(\.coordinate)
+                .filter { !($0.latitude == 0 && $0.longitude == 0) }
+
+            guard validCoords.count >= 2 else { continue }
+
+            let polyline = ColoredPolyline(coordinates: validCoords, count: validCoords.count)
             polyline.color = UIColor.systemBlue
             mapView.addOverlay(polyline)
+            allValidCoords.append(contentsOf: validCoords)
         }
 
-        if mapView.overlays.isEmpty {
+        if shouldUseDefaultViewport(for: allValidCoords) {
             mapView.setRegion(
                 MKCoordinateRegion(center: MapDefaults.home, span: MapDefaults.defaultSpan),
                 animated: false
@@ -72,6 +92,21 @@ struct MultiRouteMap: UIViewRepresentable {
         }
 
         return mapView
+    }
+
+    /// `true` when there are no valid coordinates to fit, or when fitting them
+    /// would zoom out further than `maxAutoFitSpan` in either axis. In those
+    /// cases we fall back to the central-London default instead of the globe.
+    private func shouldUseDefaultViewport(for coords: [CLLocationCoordinate2D]) -> Bool {
+        guard !coords.isEmpty else { return true }
+        let lats = coords.map(\.latitude)
+        let lons = coords.map(\.longitude)
+        guard let minLat = lats.min(), let maxLat = lats.max(),
+              let minLon = lons.min(), let maxLon = lons.max() else {
+            return true
+        }
+        return (maxLat - minLat) > MapDefaults.maxAutoFitSpan
+            || (maxLon - minLon) > MapDefaults.maxAutoFitSpan
     }
 
     func updateUIView(_ uiView: MKMapView, context: Context) {}
